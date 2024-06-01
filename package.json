@@ -1,0 +1,19 @@
+{
+	"name": "drizzle",
+    "version": "1.0.0",
+	"scripts": {
+		"dev": "tsx watch src/main.ts",
+		"generate": "drizzle-kit generate"
+	},
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"drizzle-orm": "^0.31.0",
+		"postgres": "^3.4.4"
+	},
+	"devDependencies": {
+		"@types/node": "^20.13.0",
+		"drizzle-kit": "^0.22.1",
+		"tsx": "^4.11.0",
+		"typescript": "^5.4.5"
+	}
+}
