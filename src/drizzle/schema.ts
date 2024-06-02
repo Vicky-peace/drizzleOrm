@@ -1,5 +1,6 @@
 
-import {integer, pgTable,uuid,varchar,pgEnum,uniqueIndex ,unique,boolean,real, timestamp} from 'drizzle-orm/pg-core';
+import {integer, pgTable,uuid,varchar,pgEnum,uniqueIndex ,unique,boolean,real, timestamp,primaryKey} from 'drizzle-orm/pg-core';
+import { relations, OneRelation, ManyRelation } from 'drizzle-orm/pg-core';
 
 export const userRole = pgEnum("userRole", ["ADMIN", "BASIC"])
 
@@ -37,4 +38,32 @@ export const CategoryTable = pgTable("category", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: varchar("name", {length: 255}).notNull(),
 
+})
+
+export const PostcategoryTable = pgTable("postCategory", {
+    postId: uuid("postId").references(() => PostTable.id).notNull(),
+    categoryId: uuid("categoryId").references(() => CategoryTable.id).notNull()
+}, table =>{
+    return{
+        pk: primaryKey({columns: [table.postId, table.categoryId]})
+    }
+})
+
+
+//RELATIONS
+
+export const UserTableRelations = relations(UserTable, ({one,many}) =>{
+    return{
+        preferences: one(UserPreferencesTable ),
+        posts: many(PostTable)
+    }
+})
+
+export const UserPreferencesTableRelations = relations(UserPreferencesTable, ({one}) =>{
+    return{
+        user: one(UserTable,{
+            fields: [UserPreferencesTable.userId],
+            references: [UserTable.id]
+        })
+    }
 })
